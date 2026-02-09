@@ -1,7 +1,7 @@
 import { Medicine } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
-// post create
+//  create method
 const createMedicine = async (
   data: Omit<
     Medicine,
@@ -15,10 +15,44 @@ const createMedicine = async (
       sellerId,
     },
   });
-    return result;
+  return result;
+};
 
+// get all method
+const getAllMedicines = async (query: any) => {
+  const { search, categoryId, minPrice, maxPrice } = query;
+
+  const result = await prisma.medicine.findMany({
+    where: {
+      AND: [
+        search
+          ? {
+              name: {
+                contains: search,
+                mode: "insensitive",
+              },
+            }
+          : {},
+        categoryId ? { categoryId } : {},
+        minPrice ? { price: { gte: Number(minPrice) } } : {},
+        maxPrice ? { price: { lte: Number(maxPrice) } } : {},
+      ],
+    },
+    include: {
+      category: true,
+      seller: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+
+  return result;
 };
 
 export const medicineServices = {
   createMedicine,
+  getAllMedicines,
 };

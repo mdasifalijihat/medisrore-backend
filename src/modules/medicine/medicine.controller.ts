@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import AppError from "../../middlewares/appErrors";
 import { medicineServices } from "./medicine.service";
 
+// cateate mothod
 const createMedicine = async (
   req: Request,
   res: Response,
@@ -16,7 +17,30 @@ const createMedicine = async (
       req.body,
       user.id as string,
     );
-    res.status(201).json(result);
+    res.status(201).json({
+      success: true,
+      message: "Medicine created successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// get medicines
+const getAllMedicines = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await medicineServices.getAllMedicines(req.query);
+
+    res.status(200).json({
+      success: true,
+      message: "Medicines retrieved successfully",
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
@@ -24,4 +48,5 @@ const createMedicine = async (
 
 export const medicineController = {
   createMedicine,
+  getAllMedicines,
 };
