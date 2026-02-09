@@ -14,9 +14,14 @@ const createCategory = async (
 };
 
 // Get all categories
-
+const getCategories = async () => {
+  const categories = await prisma.category.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  return categories;
+};
 
 export const categoryServices = {
   createCategory,
-  
+  getCategories,
 };

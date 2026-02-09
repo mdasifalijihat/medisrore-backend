@@ -22,9 +22,23 @@ const createCategory = async (
   }
 };
 
-
+const getAllCategories = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const categories = await categoryServices.getCategories();
+    res.status(200).json({
+      success: true,
+      categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const categoryController = {
   createCategory,
-  
+  getAllCategories,
 };
