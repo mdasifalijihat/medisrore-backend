@@ -1,6 +1,8 @@
 import express from "express";
 
 import cors from "cors";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth";
 
 const app = express();
 app.use(
@@ -10,6 +12,8 @@ app.use(
   }),
 );
 app.use(express.json());
+
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.get("/", (_req, res) => {
   res.status(200).json({
