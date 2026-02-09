@@ -5,6 +5,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import { notFound } from "./middlewares/notFound";
 import errorHandler from "./middlewares/globalErrorHandler";
+import { medicineRouter } from "./modules/medicine/medicine.routes";
 
 const app = express();
 app.use(
@@ -16,6 +17,8 @@ app.use(
 app.use(express.json());
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
+
+app.use("/medicine", medicineRouter);
 
 app.get("/", (_req, res) => {
   res.status(200).json({

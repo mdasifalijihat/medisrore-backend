@@ -42,13 +42,22 @@ const auth = (...roles: UserRole[]) => {
         });
       }
 
+      const dbUser = await prisma.user.findUnique({
+        where: { id: session.user.id },
+      });
+
+      if (!dbUser) {
+        return res.status(401).json({ message: "Your are not authorized!" });
+      }
+
       req.user = {
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.name,
-        role: session.user.role as string,
+        id: dbUser.id,
+        email: dbUser.email,
+        name: dbUser.name,
+        role: dbUser.role,
         emailVerified: session.user.emailVerified,
       };
+
       if (roles.length && !roles.includes(req.user.role as UserRole)) {
         return res.status(403).json({
           success: false,
