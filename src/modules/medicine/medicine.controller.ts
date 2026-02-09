@@ -9,8 +9,6 @@ const createMedicine = async (
 ) => {
   try {
     const user = req.user;
-    console.log(" user id ", user?.id);
-    console.log("BODY:", req.body);
     if (!user) {
       throw new AppError("Invalid medicine data", 401);
     }
