@@ -46,7 +46,61 @@ const getAllMedicines = async (
   }
 };
 
+// get by id
+const getMedicineById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+
+    const result = await medicineServices.getMedicineById(id as string);
+
+    if (!result) {
+      throw new AppError("Medicine not found", 404);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Medicine retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* =========================
+   GET SELLER MEDICINES
+========================= */
+const getSellerMedicines = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const result = await medicineServices.getSellerMedicines(user.id as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Seller medicines retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const medicineController = {
   createMedicine,
   getAllMedicines,
+  getMedicineById,
+  getSellerMedicines,
 };
