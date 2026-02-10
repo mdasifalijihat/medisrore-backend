@@ -12,4 +12,7 @@ router.get(
   categoryController.getAllCategories,
 );
 
+router.patch("/:id", categoryController.editCategory);
+router.delete("/:id", categoryController.removeCategory);
+
 export const categoryRouter = router;

@@ -21,7 +21,21 @@ const getCategories = async () => {
   return categories;
 };
 
+
+const updateCategory = async (categoryId: string, name: string) => {
+  return prisma.category.update({
+    where: { id: categoryId },
+    data: { name },
+  });
+};
+
+
+const deleteCategory = async (categoryId: string) => {
+  return prisma.category.delete({ where: { id: categoryId } });
+};
 export const categoryServices = {
   createCategory,
   getCategories,
+  updateCategory,
+  deleteCategory,
 };

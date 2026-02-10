@@ -11,6 +11,7 @@ import { orderRouter } from "./modules/order/order.router";
 import { cartRouter } from "./modules/cart/cartRouter";
 import { sellerOrderRouter } from "./modules/seller/seller.routes";
 import { reviewRouter } from "./modules/review/review.route";
+import { adminRouter } from "./modules/admin/admin.route";
 
 const app = express();
 app.use(
@@ -29,7 +30,7 @@ app.use("/orders", orderRouter);
 app.use("/cart", cartRouter);
 app.use("/seller/orders", sellerOrderRouter);
 app.use("/review", reviewRouter);
-
+app.use("/admin", adminRouter);
 app.get("/", (_req, res) => {
   res.status(200).json({
     success: true,
