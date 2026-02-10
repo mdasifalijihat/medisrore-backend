@@ -7,6 +7,7 @@ import { notFound } from "./middlewares/notFound";
 import errorHandler from "./middlewares/globalErrorHandler";
 import { medicineRouter } from "./modules/medicine/medicine.routes";
 import { categoryRouter } from "./modules/category/category.route";
+import { orderRouter } from "./modules/order/order.router";
 
 const app = express();
 app.use(
@@ -21,8 +22,7 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use("/medicine", medicineRouter);
 app.use("/category", categoryRouter);
-
-
+app.use("/orders", orderRouter);
 
 app.get("/", (_req, res) => {
   res.status(200).json({
