@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../../middlewares/appErrors";
 import { medicineServices } from "./medicine.service";
+import { success } from "better-auth";
 
 // cateate mothod
 const createMedicine = async (
@@ -131,10 +132,35 @@ const updateMedicine = async (
   }
 };
 
+// deleted method update
+const deleteMedicine = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+
+    if (!user) {
+      throw new AppError("Unauthorized", 401);
+    }
+    await medicineServices.deleteMedicine(id as string, user.id as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Medicine deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const medicineController = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
   getSellerMedicines,
   updateMedicine,
+  deleteMedicine,
 };
