@@ -24,4 +24,5 @@ router.patch("/:id", auth(UserRole.SELLER), medicineController.updateMedicine);
 // deleted method
 router.delete("/:id", auth(UserRole.SELLER), medicineController.deleteMedicine);
 
+
 export const medicineRouter: Router = router;
