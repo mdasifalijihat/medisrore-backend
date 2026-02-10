@@ -1,5 +1,6 @@
 import { Medicine } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
+import AppError from "../../middlewares/appErrors";
 
 //  create method
 const createMedicine = async (
@@ -82,9 +83,44 @@ const getSellerMedicines = async (sellerId: string) => {
   return result;
 };
 
+// update edicine (seller)
+
+const updateMedicine = async (
+  medicineId: string,
+  sellerId: string,
+  data: Partial<
+    Omit<
+      Medicine,
+      "id" | "sellerId" | "createdAt" | "orderItems" | "reviews" | "carts"
+    >
+  >,
+) => {
+  const medicine = await prisma.medicine.findUnique({
+    where: { id: medicineId },
+  });
+
+  if (!medicine) {
+    throw new AppError("Medicine not found", 404);
+  }
+
+  // ownership check
+  if (medicine.sellerId !== sellerId) {
+    throw new AppError(
+      "Forbidden! You cannot update another seller's medicine",
+      403,
+    );
+  }
+
+  return await prisma.medicine.update({
+    where: { id: medicineId  },
+    data,
+  });
+};
+
 export const medicineServices = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
   getSellerMedicines,
+  updateMedicine,
 };

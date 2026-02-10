@@ -71,9 +71,8 @@ const getMedicineById = async (
   }
 };
 
-/* =========================
-   GET SELLER MEDICINES
-========================= */
+// get seller medicine
+
 const getSellerMedicines = async (
   req: Request,
   res: Response,
@@ -98,9 +97,44 @@ const getSellerMedicines = async (
   }
 };
 
+// update seller medicine
+const updateMedicine = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+
+    if (!user) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    if (!id || Array.isArray(id)) {
+      throw new AppError("Invalid medicine id", 400);
+    }
+
+    const result = await medicineServices.updateMedicine(
+      id,
+      user.id as string,
+      req.body,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Medicine updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const medicineController = {
   createMedicine,
   getAllMedicines,
   getMedicineById,
   getSellerMedicines,
+  updateMedicine,
 };
