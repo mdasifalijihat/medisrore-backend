@@ -56,9 +56,16 @@ const removeFromCart = async (userId: string, medicineId: string) => {
   });
 };
 
-
+// get card item 
+const getCartItems = async (userId: string) => {
+  return prisma.cart.findMany({
+    where: { userId },
+    include: { medicine: true },
+  });
+};
 
 export const cartServices = {
   addToCart,
   removeFromCart,
+  getCartItems,
 };
