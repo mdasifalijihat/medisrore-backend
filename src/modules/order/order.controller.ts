@@ -15,10 +15,17 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
       throw new AppError("Delivery address is required", 400);
     }
     const result = await orderServices.createOrder(user.id, address);
+
     res.status(201).json({
       success: true,
       message: "Order placed successfully",
-      data: result,
+      data: {
+        orderId: result.order.id,
+        totalPrice: result.totalPrice,
+        paymentMethod: result.order.paymentMethod,
+        paymentStatus: result.order.paymentStatus,
+        status: result.order.status,
+      },
     });
   } catch (error) {
     next(error);

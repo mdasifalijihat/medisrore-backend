@@ -11,12 +11,19 @@ const createOrder = async (userId: string, address: string) => {
   if (cartItems.length === 0) {
     throw new AppError("Cart is empty", 400);
   }
-  // 2️⃣ create order
+
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + item.medicine.price * item.quantity,
+    0,
+  );
+
   const order = await prisma.order.create({
     data: {
       userId,
       address,
       status: OrderStatus.PLACED,
+      paymentMethod: "CASH_ON_DELIVERY",
+      paymentStatus: "PENDING",
     },
   });
 
@@ -37,7 +44,7 @@ const createOrder = async (userId: string, address: string) => {
     where: { userId },
   });
 
-  return order;
+  return { order, totalPrice };
 };
 
 // get my order
