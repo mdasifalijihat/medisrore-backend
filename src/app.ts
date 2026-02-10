@@ -10,6 +10,7 @@ import { categoryRouter } from "./modules/category/category.route";
 import { orderRouter } from "./modules/order/order.router";
 import { cartRouter } from "./modules/cart/cartRouter";
 import { sellerOrderRouter } from "./modules/seller/seller.routes";
+import { reviewRouter } from "./modules/review/review.route";
 
 const app = express();
 app.use(
@@ -27,6 +28,7 @@ app.use("/category", categoryRouter);
 app.use("/orders", orderRouter);
 app.use("/cart", cartRouter);
 app.use("/seller/orders", sellerOrderRouter);
+app.use("/review", reviewRouter);
 
 app.get("/", (_req, res) => {
   res.status(200).json({
