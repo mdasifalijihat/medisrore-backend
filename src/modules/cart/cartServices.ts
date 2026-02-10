@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma";
+import AppError from "../../middlewares/appErrors";
 
 // create add to card 
 const addToCart = async (
@@ -41,6 +42,23 @@ const addToCart = async (
   });
 };
 
+
+// remove cart 
+const removeFromCart = async (userId: string, medicineId: string) => {
+  const existing = await prisma.cart.findUnique({
+    where: { userId_medicineId: { userId, medicineId } },
+  });
+
+  if (!existing) throw new AppError("Item not found in cart", 404);
+
+  return prisma.cart.delete({
+    where: { userId_medicineId: { userId, medicineId } },
+  });
+};
+
+
+
 export const cartServices = {
   addToCart,
+  removeFromCart,
 };

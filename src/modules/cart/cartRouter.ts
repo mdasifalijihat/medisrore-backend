@@ -5,6 +5,7 @@ import { cartController } from "./cartController";
 
 const router = express.Router();
 
-router.post("/", auth(UserRole.CUSTOMER), cartController.addToCart);
+router.post("/add", auth(UserRole.CUSTOMER), cartController.addToCart);
+router.post("/remove", auth(UserRole.CUSTOMER), cartController.removeFromCart);
 
 export const cartRouter = router;
