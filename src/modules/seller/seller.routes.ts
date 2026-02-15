@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", auth(UserRole.SELLER), sellerController.getSellerOrders);
 
 // update order status
-router.put(
+router.patch(
   "/:orderId/status/",
   auth(UserRole.SELLER),
   sellerController.updateOrderStatus,

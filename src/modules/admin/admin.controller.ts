@@ -64,10 +64,22 @@ const getOrders = async (_req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getStats = async (req: Request, res: Response) => {
+  const stats = await adminServices.getDashboardStats();
+
+  res.status(200).json({
+    success: true,
+    data: stats,
+  });
+};
+
+
+
 export const adminController = {
   getUsers,
   changeUserStatus,
   getMedicines,
   removeMedicine,
   getOrders,
+  getStats,
 };

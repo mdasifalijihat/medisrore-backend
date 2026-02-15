@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import AppError from "../../middlewares/appErrors";
 
-// create add to card 
+// create add to card
 const addToCart = async (
   userId: string,
   medicineId: string,
@@ -42,8 +42,7 @@ const addToCart = async (
   });
 };
 
-
-// remove cart 
+// remove cart
 const removeFromCart = async (userId: string, medicineId: string) => {
   const existing = await prisma.cart.findUnique({
     where: { userId_medicineId: { userId, medicineId } },
@@ -56,7 +55,7 @@ const removeFromCart = async (userId: string, medicineId: string) => {
   });
 };
 
-// get card item 
+// get card item
 const getCartItems = async (userId: string) => {
   return prisma.cart.findMany({
     where: { userId },

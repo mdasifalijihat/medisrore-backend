@@ -44,6 +44,7 @@ model Medicine {
   price       Float
   stock       Int
   description String
+  image       String?
   createdAt   DateTime @default(now())
 
   categoryId String

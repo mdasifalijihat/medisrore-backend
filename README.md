@@ -8,7 +8,10 @@
 ---
 
 ## 📝 Project Overview
-MediStore is a full-stack e-commerce web application for purchasing over-the-counter (OTC) medicines. Customers can browse medicines, add to cart, place orders, and leave reviews. Sellers manage their inventory and fulfill orders. Admins oversee the platform and manage all users, categories, and orders.
+MediStore is a full-stack e-commerce web application for purchasing over-the-counter 
+(OTC) medicines. Customers can browse medicines, add to cart, place orders, 
+and leave reviews. Sellers manage their inventory and fulfill orders. 
+Admins oversee the platform and manage all users, categories, and orders.
 
 ---
 

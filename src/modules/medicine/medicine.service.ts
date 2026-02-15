@@ -20,25 +20,91 @@ const createMedicine = async (
 };
 
 // get all method
+// const getAllMedicines = async (query: any) => {
+//   const { search, category, minPrice, maxPrice } = query as {
+//     search?: string;
+//     category?: string;
+//     minPrice?: string;
+//     maxPrice?: string;
+//   };
+
+//   const filters: any = {};
+
+//   // 🔍 Search by medicine name
+//   if (search) {
+//     filters.OR = [
+//       {
+//         name: {
+//           contains: search.trim(),
+//           mode: "insensitive",
+//         },
+//       },
+//       {
+//         description: {
+//           contains: search.trim(),
+//           mode: "insensitive",
+//         },
+//       },
+//     ];
+//   }
+
+//   // 📂 Filter by category name
+//   if (category) {
+//     filters.category = {
+//       name: {
+//         contains: category,
+//         mode: "insensitive",
+//       },
+//     };
+//   }
+
+//   // 💰 Price filtering
+//   if (minPrice || maxPrice) {
+//     filters.price = {};
+
+//     if (minPrice) {
+//       filters.price.gte = Number(minPrice);
+//     }
+
+//     if (maxPrice) {
+//       filters.price.lte = Number(maxPrice);
+//     }
+//   }
+
+//   const result = await prisma.medicine.findMany({
+//     where: filters,
+//     include: {
+//       category: true,
+//       seller: {
+//         select: {
+//           id: true,
+//           name: true,
+//         },
+//       },
+//     },
+//   });
+
+//   return result;
+// };
+
 const getAllMedicines = async (query: any) => {
-  const { search, categoryId, minPrice, maxPrice } = query;
+  const { search, categoryId } = query;
+
+  const where: any = {};
+
+  if (search) {
+    where.name = {
+      contains: search.trim(),
+      mode: "insensitive",
+    };
+  }
+
+  if (categoryId) {
+    where.categoryId = categoryId;
+  }
 
   const result = await prisma.medicine.findMany({
-    where: {
-      AND: [
-        search
-          ? {
-              name: {
-                contains: search,
-                mode: "insensitive",
-              },
-            }
-          : {},
-        categoryId ? { categoryId } : {},
-        minPrice ? { price: { gte: Number(minPrice) } } : {},
-        maxPrice ? { price: { lte: Number(maxPrice) } } : {},
-      ],
-    },
+    where,
     include: {
       category: true,
       seller: {

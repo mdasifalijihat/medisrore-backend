@@ -6,7 +6,11 @@ import { cartController } from "./cartController";
 const router = express.Router();
 
 router.post("/add", auth(UserRole.CUSTOMER), cartController.addToCart);
-router.post("/remove", auth(UserRole.CUSTOMER), cartController.removeFromCart);
+router.delete(
+  "/:medicineId",
+  auth(UserRole.CUSTOMER),
+  cartController.removeFromCart,
+);
 router.get("/", auth(UserRole.CUSTOMER), cartController.getCart);
 
 export const cartRouter = router;

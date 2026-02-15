@@ -18,4 +18,6 @@ router.delete("/medicines/:id", adminController.removeMedicine);
 /* ORDERS */
 router.get("/orders", adminController.getOrders);
 
+router.get("/stats", adminController.getStats);
+
 export const adminRouter = router;

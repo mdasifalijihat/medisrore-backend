@@ -46,6 +46,7 @@ const editCategory = async (
   try {
     const { id } = req.params;
     const { name } = req.body;
+    console.log("osud name",name)
     const category = await categoryServices.updateCategory(id as string, name);
     res.status(200).json({ success: true, data: category });
   } catch (error) {

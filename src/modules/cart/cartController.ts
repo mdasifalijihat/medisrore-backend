@@ -2,8 +2,27 @@ import { Request, Response, NextFunction } from "express";
 import { cartServices } from "./cartServices";
 import AppError from "../../middlewares/appErrors";
 
+const getCart = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = req.user;
+    if (!user) throw new AppError("Unauthorized", 401);
 
-// add to card 
+    const cartItems = await cartServices.getCartItems(user.id);
+    const totalPrice = cartItems.reduce(
+      (sum, item) => sum + item.medicine.price * item.quantity,
+      0,
+    );
+
+    res.status(200).json({
+      success: true,
+      data: { cartItems, totalPrice },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// add to card
 const addToCart = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
@@ -25,7 +44,7 @@ const addToCart = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// remove from cart 
+// remove from cart
 const removeFromCart = async (
   req: Request,
   res: Response,
@@ -33,43 +52,22 @@ const removeFromCart = async (
 ) => {
   try {
     const user = req.user;
-    const { medicineId } = req.body;
+    const { medicineId } = req.params;
 
     if (!user) throw new AppError("Unauthorized", 401);
 
-    const result = await cartServices.removeFromCart(user.id, medicineId);
+    await cartServices.removeFromCart(user.id, medicineId as string);
+
     res.status(200).json({
       success: true,
       message: "Removed from cart",
-      data: result,
     });
   } catch (err) {
     next(err);
   }
 };
 
-// get cart 
-
-const getCart = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = req.user;
-    if (!user) throw new AppError("Unauthorized", 401);
-
-    const cartItems = await cartServices.getCartItems(user.id);
-    const totalPrice = cartItems.reduce(
-      (sum, item) => sum + item.medicine.price * item.quantity,
-      0,
-    );
-
-    res.status(200).json({
-      success: true,
-      data: { cartItems, totalPrice },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
+// get cart
 
 export const cartController = {
   addToCart,

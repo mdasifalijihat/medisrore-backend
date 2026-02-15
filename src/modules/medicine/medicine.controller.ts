@@ -156,8 +156,6 @@ const deleteMedicine = async (
   }
 };
 
-
-
 export const medicineController = {
   createMedicine,
   getAllMedicines,

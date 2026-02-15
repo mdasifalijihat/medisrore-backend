@@ -66,6 +66,17 @@ const getAllOrders = async () => {
   });
 };
 
+const getDashboardStats = async () => {
+  const totalUsers = await prisma.user.count();
+  const totalMedicines = await prisma.medicine.count();
+  const totalOrders = await prisma.order.count();
+
+  return {
+    totalUsers,
+    totalMedicines,
+    totalOrders,
+  };
+};
 
 export const adminServices = {
   getAllUsers,
@@ -73,4 +84,5 @@ export const adminServices = {
   getAllMedicines,
   deleteMedicineByAdmin,
   getAllOrders,
+  getDashboardStats,
 };

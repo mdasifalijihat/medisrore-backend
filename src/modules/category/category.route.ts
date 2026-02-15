@@ -6,13 +6,9 @@ const router = express.Router();
 
 router.post("/", auth(UserRole.ADMIN), categoryController.createCategory);
 
-router.get(
-  "/",
-  auth(UserRole.ADMIN, UserRole.SELLER),
-  categoryController.getAllCategories,
-);
+router.get("/", categoryController.getAllCategories);
 
-router.patch("/:id", categoryController.editCategory);
-router.delete("/:id", categoryController.removeCategory);
+router.patch("/:id", auth(UserRole.ADMIN), categoryController.editCategory);
+router.delete("/:id", auth(UserRole.ADMIN), categoryController.removeCategory);
 
 export const categoryRouter = router;
