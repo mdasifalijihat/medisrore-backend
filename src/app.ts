@@ -32,11 +32,15 @@ app.use("/cart", cartRouter);
 app.use("/seller/orders", sellerOrderRouter);
 app.use("/review", reviewRouter);
 app.use("/admin", adminRouter);
-app.get("/", (_req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Medi-Store Server API is running ",
-  });
+
+// app.get("/", (_req, res) => {
+//   res.status(200).json({
+//     success: true,
+//     message: "Medi-Store Server API is running ",
+//   });
+// });
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
 });
 
 // error handlers
